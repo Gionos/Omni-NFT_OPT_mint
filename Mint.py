@@ -35,10 +35,10 @@ with open('config_user.json', 'r') as f:
     config_user = json.load(f)
 
 # Доступ к настройкам в скрипте
-min_mint = config_user['min_mint']
-max_mint = config_user['max_mint']
-min_delay = config_user['min_delay']
-max_delay = config_user['max_delay']
+min_mint = float(config_user['min_mint'])
+max_mint = float(config_user['max_mint'])
+min_delay = float(config_user['min_delay'])
+max_delay = float(config_user['max_delay'])
 
 # Загрузка ABI контракта (Application Binary Interface) из файла JSON
 # ABI позволяет Python взаимодействовать с функциями контракта
@@ -69,15 +69,15 @@ def OmniNFT(private_key):
     contract = w3.eth.contract(address=contract_address, abi=contract_details['ABI'])
 
     # Выбор случайного количества токенов для выпуска
-    _nbTokens = round(random.uniform(min_mint, max_mint))
+    _nbTokens = int(round(random.uniform(min_mint, max_mint)))
 
     # Оценка необходимого газа для выпуска токенов
     estimated_gas = contract.functions.mint(_nbTokens).estimate_gas({'from': account.address, })
 
     # Расчет лимита газа и цены газа для транзакции
-    gas_limit = int(estimated_gas * 1.05)
-    max_gwei = round(random.uniform(0.000000500, 0.000000500), 9)
-    max_priority_gwei = round(random.uniform(0.000000200, 0.000000400), 9)
+    gas_limit = int(estimated_gas * 1.5)
+    max_gwei = round(random.uniform(0.002397986, 0.003397986 ), 9)
+    max_priority_gwei = round(random.uniform(0.000000350, 0.000000600), 9)
     max_wei = max_gwei * 1e9
     max_priority_wei = max_priority_gwei * 1e9
 
